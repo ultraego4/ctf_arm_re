@@ -117,6 +117,7 @@ void Reset_Handler(void) {
 
   uint32_t size = (uint32_t)&_edata - (uint32_t)&_sdata;
 
+  //uint8 for byte by byte copy
   uint8_t *pDst = (uint8_t *)&_sdata; // sram
   uint8_t *pSrc = (uint8_t *)&_etext; // flash
 

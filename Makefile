@@ -28,5 +28,13 @@ build/firmware.bin: build/firmware.elf
 clean:
 	rm -rf build/*
 
-.PHONY: all clean
+flash: build/firmware.elf
+	openocd -f interface/stlink.cfg -f target/stm32f1x.cfg \
+	-c "program build/firmware.elf verify reset exit"
+
+gdb: build/firmware.elf
+	arm-none-eabi-gdb $< -ex "target remote localhost:3333" \
+	                    -ex "monitor reset halt"
+
+.PHONY: all clean flash gdb
 
