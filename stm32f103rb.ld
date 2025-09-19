@@ -11,7 +11,6 @@ _estack = ORIGIN(SRAM) + LENGTH(SRAM);
 
 
 /* need the symbols so in the startup code i can copy the .data from flash to ram*/
-/* no symbol needed for zeroing out bss */
 
 SECTIONS
 {
