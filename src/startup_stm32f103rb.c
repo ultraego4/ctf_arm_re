@@ -20,9 +20,20 @@
 
 extern uint32_t _estack;
 
+extern uint32_t _etext;
+
+extern uint32_t _sdata;
+extern uint32_t _edata;
+
+
+extern uint32_t _sbss;
+extern uint32_t _ebss;
+
 
 void Reset_Handler(void);
 void Default_Handler(void);
+
+int main(void);
 
 /* create its own section to put it before .text so no other code will accidentally be the first, handled in the .ld */
 __attribute__ ((section(".isr_vector")))
@@ -106,6 +117,34 @@ const uint32_t vector_table[] = {
 };
 
 void Reset_Handler(void){
+
+// copy .data to sram
+
+uint32_t size = (uint32_t)&_edata - (uint32_t)&_sdata;
+
+uint8_t *pDst = (uint8_t*)&_sdata; //sram
+uint8_t *pSrc = (uint8_t*)&_etext; //flash
+
+
+for (uint32_t i = 0; i < size; i++) {
+  *pDst++ = *pSrc++;
+}
+
+
+// zero out .bss
+
+size = (uint32_t)&_ebss - (uint32_t)&_sbss;
+
+pDst = (uint8_t*)&_sbss;
+pSrc = (uint8_t*)&_ebss;
+
+for (uint32_t i = 0; i < size; i++) {
+  *pDst++ = 0;
+}
+
+// call main
+
+main();
 
 }
 

@@ -28,63 +28,66 @@ LOAD /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/libc.a
 END GROUP
                 0x20005000                        _estack = (ORIGIN (SRAM) + LENGTH (SRAM))
 
-.text           0x08000000      0x150
+.text           0x08000000      0x1cc
  *(.isr_vector)
  .isr_vector    0x08000000      0x134 build/startup_stm32f103rb.o
                 0x08000000                vector_table
  *(.text)
  .text          0x08000134        0x8 build/main.o
                 0x08000134                main
- .text          0x0800013c       0x14 build/startup_stm32f103rb.o
+ .text          0x0800013c       0x90 build/startup_stm32f103rb.o
                 0x0800013c                Reset_Handler
-                0x08000148                Default_Handler
+                0x080001c4                Default_Handler
  *(.rodata)
-                0x08000150                        _etext = .
+                0x080001cc                        . = ALIGN (0x4)
+                0x080001cc                        _etext = .
 
-.glue_7         0x08000150        0x0
- .glue_7        0x08000150        0x0 linker stubs
+.glue_7         0x080001cc        0x0
+ .glue_7        0x080001cc        0x0 linker stubs
 
-.glue_7t        0x08000150        0x0
- .glue_7t       0x08000150        0x0 linker stubs
+.glue_7t        0x080001cc        0x0
+ .glue_7t       0x080001cc        0x0 linker stubs
 
-.vfp11_veneer   0x08000150        0x0
- .vfp11_veneer  0x08000150        0x0 linker stubs
+.vfp11_veneer   0x080001cc        0x0
+ .vfp11_veneer  0x080001cc        0x0 linker stubs
 
-.v4_bx          0x08000150        0x0
- .v4_bx         0x08000150        0x0 linker stubs
+.v4_bx          0x080001cc        0x0
+ .v4_bx         0x080001cc        0x0 linker stubs
 
-.iplt           0x08000150        0x0
- .iplt          0x08000150        0x0 build/startup_stm32f103rb.o
+.iplt           0x080001cc        0x0
+ .iplt          0x080001cc        0x0 build/startup_stm32f103rb.o
 
-.rel.dyn        0x08000150        0x0
- .rel.iplt      0x08000150        0x0 build/startup_stm32f103rb.o
+.rel.dyn        0x080001cc        0x0
+ .rel.iplt      0x080001cc        0x0 build/startup_stm32f103rb.o
 
-.data           0x20000000        0x0 load address 0x08000150
+.data           0x20000000        0x0 load address 0x080001cc
                 0x20000000                        _sdata = .
  *(.data)
  .data          0x20000000        0x0 build/main.o
  .data          0x20000000        0x0 build/startup_stm32f103rb.o
+                0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _edata = .
 
-.igot.plt       0x20000000        0x0 load address 0x08000150
+.igot.plt       0x20000000        0x0 load address 0x080001cc
  .igot.plt      0x20000000        0x0 build/startup_stm32f103rb.o
 
-.bss            0x20000000        0x0 load address 0x08000150
+.bss            0x20000000        0x0 load address 0x080001cc
                 0x20000000                        _sbss = .
  *(.bss)
  .bss           0x20000000        0x0 build/main.o
  .bss           0x20000000        0x0 build/startup_stm32f103rb.o
+                0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _ebss = .
 OUTPUT(build/firmware.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x00000000      0x129
+.debug_info     0x00000000      0x1e1
  .debug_info    0x00000000       0x48 build/main.o
- .debug_info    0x00000048       0xe1 build/startup_stm32f103rb.o
+ .debug_info    0x00000048      0x199 build/startup_stm32f103rb.o
 
-.debug_abbrev   0x00000000       0xd1
+.debug_abbrev   0x00000000      0x144
  .debug_abbrev  0x00000000       0x3c build/main.o
- .debug_abbrev  0x0000003c       0x95 build/startup_stm32f103rb.o
+ .debug_abbrev  0x0000003c      0x108 build/startup_stm32f103rb.o
 
 .debug_aranges  0x00000000       0x40
  .debug_aranges
@@ -103,14 +106,14 @@ LOAD linker stubs
  .debug_macro   0x00000d32       0x6a build/startup_stm32f103rb.o
  .debug_macro   0x00000d9c      0x1df build/startup_stm32f103rb.o
 
-.debug_line     0x00000000      0x182
+.debug_line     0x00000000      0x1d3
  .debug_line    0x00000000       0x3d build/main.o
- .debug_line    0x0000003d      0x145 build/startup_stm32f103rb.o
+ .debug_line    0x0000003d      0x196 build/startup_stm32f103rb.o
 
-.debug_str      0x00000000     0x3b9c
- .debug_str     0x00000000     0x3b9c build/main.o
+.debug_str      0x00000000     0x3bd6
+ .debug_str     0x00000000     0x3bd6 build/main.o
                                0x2d87 (size before relaxing)
- .debug_str     0x00003b9c     0x3cf0 build/startup_stm32f103rb.o
+ .debug_str     0x00003bd6     0x3d37 build/startup_stm32f103rb.o
 
 .comment        0x00000000       0x1e
  .comment       0x00000000       0x1e build/main.o
@@ -124,6 +127,6 @@ LOAD linker stubs
  .ARM.attributes
                 0x0000002d       0x2d build/startup_stm32f103rb.o
 
-.debug_frame    0x00000000       0x70
+.debug_frame    0x00000000       0x74
  .debug_frame   0x00000000       0x28 build/main.o
- .debug_frame   0x00000028       0x48 build/startup_stm32f103rb.o
+ .debug_frame   0x00000028       0x4c build/startup_stm32f103rb.o
