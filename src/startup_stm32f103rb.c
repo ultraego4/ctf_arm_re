@@ -2,10 +2,8 @@
 /* 2. init .data and .bss with zeroes in ram */
 /* 3. call main() */
 
-
-
-/* refernce for the vector table, table61 https://www.st.com/resource/en/reference_manual/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf*/
-
+/* refernce for the vector table, table61
+ * https://www.st.com/resource/en/reference_manual/rm0008-stm32f101xx-stm32f102xx-stm32f103xx-stm32f105xx-and-stm32f107xx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf*/
 
 /* FLASH memory layout*/
 
@@ -14,7 +12,6 @@
 /* .rodata */
 /* .text */
 /* vector table*/
-
 
 #include <stdint.h>
 
@@ -25,31 +22,29 @@ extern uint32_t _etext;
 extern uint32_t _sdata;
 extern uint32_t _edata;
 
-
 extern uint32_t _sbss;
 extern uint32_t _ebss;
-
 
 void Reset_Handler(void);
 void Default_Handler(void);
 
 int main(void);
 
-/* create its own section to put it before .text so no other code will accidentally be the first, handled in the .ld */
-__attribute__ ((section(".isr_vector")))
-const uint32_t vector_table[] = {
-    (uint32_t)&_estack,       // 0x00: Initial stack pointer (MSP)
-    (uint32_t)Reset_Handler,  // 0x04: Reset
+/* create its own section to put it before .text so no other code will
+ * accidentally be the first, handled in the .ld */
+__attribute__((section(".isr_vector"))) const uint32_t vector_table[] = {
+    (uint32_t)&_estack,        // 0x00: Initial stack pointer (MSP)
+    (uint32_t)Reset_Handler,   // 0x04: Reset
     (uint32_t)Default_Handler, // 0x08: NMI
     (uint32_t)Default_Handler, // 0x0C: HardFault
     (uint32_t)Default_Handler, // 0x10: MemManage
     (uint32_t)Default_Handler, // 0x14: BusFault
     (uint32_t)Default_Handler, // 0x18: UsageFault
-    0,                          // 0x1C: Reserved
-    0, 0, 0, 0,                 // 0x20-0x2B: Reserved / padding
+    0,                         // 0x1C: Reserved
+    0, 0, 0, 0,                // 0x20-0x2B: Reserved / padding
     (uint32_t)Default_Handler, // 0x2C: SVCall
     (uint32_t)Default_Handler, // 0x30: Debug Monitor
-    0,                          // 0x34: Reserved
+    0,                         // 0x34: Reserved
     (uint32_t)Default_Handler, // 0x38: PendSV
     (uint32_t)Default_Handler, // 0x3C: SysTick
 
@@ -116,38 +111,36 @@ const uint32_t vector_table[] = {
     (uint32_t)Default_Handler, // 0x12C: DMA2_Channel4_5
 };
 
-void Reset_Handler(void){
+void Reset_Handler(void) {
 
-// copy .data to sram
+  // copy .data to sram
 
-uint32_t size = (uint32_t)&_edata - (uint32_t)&_sdata;
+  uint32_t size = (uint32_t)&_edata - (uint32_t)&_sdata;
 
-uint8_t *pDst = (uint8_t*)&_sdata; //sram
-uint8_t *pSrc = (uint8_t*)&_etext; //flash
+  uint8_t *pDst = (uint8_t *)&_sdata; // sram
+  uint8_t *pSrc = (uint8_t *)&_etext; // flash
 
+  for (uint32_t i = 0; i < size; i++) {
+    *pDst++ = *pSrc++;
+  }
 
-for (uint32_t i = 0; i < size; i++) {
-  *pDst++ = *pSrc++;
+  // zero out .bss
+
+  size = (uint32_t)&_ebss - (uint32_t)&_sbss;
+
+  pDst = (uint8_t *)&_sbss;
+  pSrc = (uint8_t *)&_ebss;
+
+  for (uint32_t i = 0; i < size; i++) {
+    *pDst++ = 0;
+  }
+
+  // call main
+
+  main();
 }
 
-
-// zero out .bss
-
-size = (uint32_t)&_ebss - (uint32_t)&_sbss;
-
-pDst = (uint8_t*)&_sbss;
-pSrc = (uint8_t*)&_ebss;
-
-for (uint32_t i = 0; i < size; i++) {
-  *pDst++ = 0;
-}
-
-// call main
-
-main();
-
-}
-
-void Default_Handler(void){
-  while(1);
+void Default_Handler(void) {
+  while (1)
+    ;
 }
