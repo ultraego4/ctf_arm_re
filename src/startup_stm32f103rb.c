@@ -30,9 +30,9 @@ void Default_Handler(void);
 
 int main(void);
 
-/* create its own section to put it before .text so no other code will
- * accidentally be the first, handled in the .ld */
-__attribute__((section(".isr_vector"))) const uint32_t vector_table[] = {
+/* create its own section to put it before .text so no other code will accidentally be the first, handled in the .ld */
+__attribute__((section(".isr_vector"))) 
+const uint32_t vector_table[] = {
     (uint32_t)&_estack,        // 0x00: Initial stack pointer (MSP)
     (uint32_t)Reset_Handler,   // 0x04: Reset
     (uint32_t)Default_Handler, // 0x08: NMI
