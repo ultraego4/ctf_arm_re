@@ -1,0 +1,4 @@
+cffi==2.0.0
+pqcrypto==0.3.4
+pycparser==2.23
+pycryptodome==3.23.0
