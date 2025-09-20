@@ -37,5 +37,8 @@ gdb: build/firmware.elf
 	-ex "target extended-remote | openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c 'gdb_port pipe'" \
 	-ex "monitor reset halt"
 
+strip: build/firmware.elf
+	arm-none-eabi-strip --strip-all -o build/firmware_stripped.elf build/firmware.elf
+
 .PHONY: all clean flash gdb
 
