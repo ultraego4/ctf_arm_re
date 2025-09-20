@@ -55,7 +55,7 @@ LOAD /usr/lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/libc.a
 END GROUP
                 0x20005000                        _estack = (ORIGIN (SRAM) + LENGTH (SRAM))
 
-.text           0x08000000      0xe6c
+.text           0x08000000      0xe7c
  *(.isr_vector)
  .isr_vector    0x08000000      0x134 build/startup_stm32f103rb.o
                 0x08000000                vector_table
@@ -67,33 +67,33 @@ END GROUP
                 0x0800013c                Reset_Handler
                 0x080001c4                Default_Handler
  *(.rodata)
- .rodata        0x080001cc      0x650 build/kyber_arrays.o
+ .rodata        0x080001cc      0xcb0 build/kyber_arrays.o
                 0x080001cc                pk
-                0x080004ec                ct
-                0x080007ec                flag
- .rodata        0x0800081c      0x650 build/main.o
-                0x08000e6c                        . = ALIGN (0x4)
-                0x08000e6c                        _etext = .
+                0x080004ec                secret_key
+                0x08000b4c                ct
+                0x08000e4c                encrypted_flag
+                0x08000e7c                        . = ALIGN (0x4)
+                0x08000e7c                        _etext = .
 
-.glue_7         0x08000e6c        0x0
- .glue_7        0x08000e6c        0x0 linker stubs
+.glue_7         0x08000e7c        0x0
+ .glue_7        0x08000e7c        0x0 linker stubs
 
-.glue_7t        0x08000e6c        0x0
- .glue_7t       0x08000e6c        0x0 linker stubs
+.glue_7t        0x08000e7c        0x0
+ .glue_7t       0x08000e7c        0x0 linker stubs
 
-.vfp11_veneer   0x08000e6c        0x0
- .vfp11_veneer  0x08000e6c        0x0 linker stubs
+.vfp11_veneer   0x08000e7c        0x0
+ .vfp11_veneer  0x08000e7c        0x0 linker stubs
 
-.v4_bx          0x08000e6c        0x0
- .v4_bx         0x08000e6c        0x0 linker stubs
+.v4_bx          0x08000e7c        0x0
+ .v4_bx         0x08000e7c        0x0 linker stubs
 
-.iplt           0x08000e6c        0x0
- .iplt          0x08000e6c        0x0 build/startup_stm32f103rb.o
+.iplt           0x08000e7c        0x0
+ .iplt          0x08000e7c        0x0 build/startup_stm32f103rb.o
 
-.rel.dyn        0x08000e6c        0x0
- .rel.iplt      0x08000e6c        0x0 build/startup_stm32f103rb.o
+.rel.dyn        0x08000e7c        0x0
+ .rel.iplt      0x08000e7c        0x0 build/startup_stm32f103rb.o
 
-.data           0x20000000        0x0 load address 0x08000e6c
+.data           0x20000000        0x0 load address 0x08000e7c
                 0x20000000                        _sdata = .
  *(.data)
  .data          0x20000000        0x0 build/kyber_arrays.o
@@ -102,10 +102,10 @@ END GROUP
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _edata = .
 
-.igot.plt       0x20000000        0x0 load address 0x08000e6c
+.igot.plt       0x20000000        0x0 load address 0x08000e7c
  .igot.plt      0x20000000        0x0 build/startup_stm32f103rb.o
 
-.bss            0x20000000        0x0 load address 0x08000e6c
+.bss            0x20000000        0x0 load address 0x08000e7c
                 0x20000000                        _sbss = .
  *(.bss)
  .bss           0x20000000        0x0 build/kyber_arrays.o
@@ -116,15 +116,15 @@ END GROUP
 OUTPUT(build/firmware.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x00000000      0x3a5
- .debug_info    0x00000000       0xf7 build/kyber_arrays.o
- .debug_info    0x000000f7      0x115 build/main.o
- .debug_info    0x0000020c      0x199 build/startup_stm32f103rb.o
+.debug_info     0x00000000      0x354
+ .debug_info    0x00000000      0x134 build/kyber_arrays.o
+ .debug_info    0x00000134       0x87 build/main.o
+ .debug_info    0x000001bb      0x199 build/startup_stm32f103rb.o
 
-.debug_abbrev   0x00000000      0x225
- .debug_abbrev  0x00000000       0x81 build/kyber_arrays.o
- .debug_abbrev  0x00000081       0x9c build/main.o
- .debug_abbrev  0x0000011d      0x108 build/startup_stm32f103rb.o
+.debug_abbrev   0x00000000      0x1f0
+ .debug_abbrev  0x00000000       0xa1 build/kyber_arrays.o
+ .debug_abbrev  0x000000a1       0x47 build/main.o
+ .debug_abbrev  0x000000e8      0x108 build/startup_stm32f103rb.o
 
 .debug_aranges  0x00000000       0x58
  .debug_aranges
@@ -134,28 +134,28 @@ LOAD linker stubs
  .debug_aranges
                 0x00000038       0x20 build/startup_stm32f103rb.o
 
-.debug_macro    0x00000000     0x1034
- .debug_macro   0x00000000       0x63 build/kyber_arrays.o
- .debug_macro   0x00000063      0xaba build/kyber_arrays.o
- .debug_macro   0x00000b1d       0x22 build/kyber_arrays.o
- .debug_macro   0x00000b3f       0x8e build/kyber_arrays.o
- .debug_macro   0x00000bcd       0x51 build/kyber_arrays.o
- .debug_macro   0x00000c1e      0x103 build/kyber_arrays.o
- .debug_macro   0x00000d21       0x6a build/kyber_arrays.o
- .debug_macro   0x00000d8b      0x1df build/kyber_arrays.o
- .debug_macro   0x00000f6a       0x67 build/main.o
- .debug_macro   0x00000fd1       0x63 build/startup_stm32f103rb.o
+.debug_macro    0x00000000     0x1044
+ .debug_macro   0x00000000       0x6d build/kyber_arrays.o
+ .debug_macro   0x0000006d      0xaba build/kyber_arrays.o
+ .debug_macro   0x00000b27       0x22 build/kyber_arrays.o
+ .debug_macro   0x00000b49       0x8e build/kyber_arrays.o
+ .debug_macro   0x00000bd7       0x51 build/kyber_arrays.o
+ .debug_macro   0x00000c28      0x103 build/kyber_arrays.o
+ .debug_macro   0x00000d2b       0x6a build/kyber_arrays.o
+ .debug_macro   0x00000d95      0x1df build/kyber_arrays.o
+ .debug_macro   0x00000f74       0x6d build/main.o
+ .debug_macro   0x00000fe1       0x63 build/startup_stm32f103rb.o
 
-.debug_line     0x00000000      0x3fa
- .debug_line    0x00000000      0x123 build/kyber_arrays.o
- .debug_line    0x00000123      0x13f build/main.o
- .debug_line    0x00000262      0x198 build/startup_stm32f103rb.o
+.debug_line     0x00000000      0x40c
+ .debug_line    0x00000000      0x135 build/kyber_arrays.o
+ .debug_line    0x00000135      0x13f build/main.o
+ .debug_line    0x00000274      0x198 build/startup_stm32f103rb.o
 
-.debug_str      0x00000000     0x3bee
- .debug_str     0x00000000     0x3bee build/kyber_arrays.o
-                               0x3cb9 (size before relaxing)
- .debug_str     0x00003bee     0x3cb6 build/main.o
- .debug_str     0x00003bee     0x3d37 build/startup_stm32f103rb.o
+.debug_str      0x00000000     0x3c13
+ .debug_str     0x00000000     0x3c13 build/kyber_arrays.o
+                               0x3cde (size before relaxing)
+ .debug_str     0x00003c13     0x3caf build/main.o
+ .debug_str     0x00003c13     0x3d37 build/startup_stm32f103rb.o
 
 .comment        0x00000000       0x1e
  .comment       0x00000000       0x1e build/kyber_arrays.o

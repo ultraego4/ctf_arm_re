@@ -1,4 +1,4 @@
-#include "kyber_arrays.c"
+#include "kyber_arrays.h"
 
 int main(void){
     while(1);
