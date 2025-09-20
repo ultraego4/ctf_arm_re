@@ -68,6 +68,9 @@ END GROUP
                 0x080001c4                Default_Handler
  *(.rodata)
  .rodata        0x080001cc      0x650 build/kyber_arrays.o
+                0x080001cc                pk
+                0x080004ec                ct
+                0x080007ec                flag
  .rodata        0x0800081c      0x650 build/main.o
                 0x08000e6c                        . = ALIGN (0x4)
                 0x08000e6c                        _etext = .
@@ -118,10 +121,10 @@ LOAD linker stubs
  .debug_info    0x000000f7      0x115 build/main.o
  .debug_info    0x0000020c      0x199 build/startup_stm32f103rb.o
 
-.debug_abbrev   0x00000000      0x221
- .debug_abbrev  0x00000000       0x7d build/kyber_arrays.o
- .debug_abbrev  0x0000007d       0x9c build/main.o
- .debug_abbrev  0x00000119      0x108 build/startup_stm32f103rb.o
+.debug_abbrev   0x00000000      0x225
+ .debug_abbrev  0x00000000       0x81 build/kyber_arrays.o
+ .debug_abbrev  0x00000081       0x9c build/main.o
+ .debug_abbrev  0x0000011d      0x108 build/startup_stm32f103rb.o
 
 .debug_aranges  0x00000000       0x58
  .debug_aranges
